@@ -1,0 +1,49 @@
+<div id="bt-div" class="row"> 
+    <button id="bt" type="button" class="btn btn-primary" [routerLink]="['/create','game']"> 
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+    </button> 
+</div> 
+  
+<div class="container" style="margin-top:50px;"> 
+    <div class="row form-group"> 
+        <div class="col-lg-3 col-sm-6" *ngFor="let game of games"> 
+            <div class="panel panel-default"> 
+                <div class="panel-heading">  
+                    <h3 class="panel-title">{{game.title}}</h3> 
+                </div> 
+                <div class="panel-image">  
+                    <img [src]="getCoverImage(game)" class="panel-image-preview" width="150" height="150"/> 
+                    <label for="toggle-1"></label> 
+                </div> 
+                <div class="panel-footer text-center">
+                    <a [routerLink]="['/detail', 'game', game._id]"> 
+                        <span class="glyphicon glyphicon-eye-open"></span> 
+                    </a>   
+                    <a [routerLink]="['/create', 'copy', game._id]"><span class="glyphicon glyphicon-plus-sign"></span></a>   
+                    <a (click)="selectGame(game)"> 
+                        <span class="glyphicon glyphicon-remove"></span> 
+                    </a> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+ 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
+    <div class="modal-dialog" role="document"> 
+        <div class="modal-content"> 
+            <div class="modal-header"> 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+                <h4 class="modal-title" id="myModalLabel">Eliminar Juego</h4> 
+            </div> 
+            <div class="modal-body"> 
+                <h3>¿Está seguro que desea eliminar {{gameSelected.title}}?</h3> 
+            </div> 
+            <div class="modal-footer"> 
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button> 
+                <button type="button" class="btn btn-primary" (click)="delete(); $event.stopPropagation()">Eliminar</button> 
+            </div> 
+        </div> 
+    </div> 
+</div>
+ 

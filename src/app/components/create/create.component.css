@@ -1,0 +1,19 @@
+#user{
+    margin-top: 30px;
+    border: 40px, solid, black; 
+}
+
+#title{
+    border: 10px, solid, black;
+    background: lightseagreen;
+    margin-top: 30px;
+}
+
+h3{
+    text-align: center;
+    color: white;
+}
+
+button{
+    background: lightblue;
+}

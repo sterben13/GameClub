@@ -1,0 +1,155 @@
+<div [ngSwitch]="type">
+    <div *ngSwitchCase="'user'">
+
+        <div id="title" class="row center">
+            <h3 class="center">Registro de Usuario</h3>
+        </div>
+
+        <div class="row" id="user">
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <img [src]="image" class="img-responsive" alt="Image">
+            </div>
+
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <form (ngSubmit)="onSubmitUser(userForm)" #userForm="ngForm" enctype="multipart/form-data" id="">
+                    <div class="form-group">
+                        <label for="user-name">Nombre</label>
+                        <input type="text" class="form-control" id="user-name" placeholder="Ejem: Ivan" required [(ngModel)]="user.nombre" name="nombre"
+                            #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-last-name">Apellidos</label>
+                        <input type="text" class="form-control" id="user-last-name" placeholder="Ejem: Romero Garcia" required [(ngModel)]="user.apellidos"
+                            name="apellidos" #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-tel">telefono</label>
+                        <input type="tel" class="form-control" id="user-tel" placeholder="Telefono" required [(ngModel)]="user.telefono" name="telefono"
+                            #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-address">Direccion</label>
+                        <input type="text" class="form-control" id="user-address" placeholder="" required [(ngModel)]="user.direccion" name="direccion"
+                            #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-photo">Foto</label>
+                        <input type="file" class="form-control" id="user-photo" placeholder="" (change)="onChange($event)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-email">Email</label>
+                        <input type="email" class="form-control" id="user-email" placeholder="Ejem: ivan@gmail.com" required [(ngModel)]="user.email"
+                            name="email" #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="pass-user">Password</label>
+                        <input type="password" class="form-control" id="pass-user" placeholder="Password" required [(ngModel)]="user.password" name="password"
+                            #name="ngModel">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div *ngSwitchCase="'game'">
+        <div id="title" class="row center">
+            <h3 class="center">Registro de Juegos</h3>
+        </div>
+
+        <div class="row" id="contenido">
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <img [src]="image" class="img-responsive" alt="Imagen portada">
+            </div>
+
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <form (ngSubmit)="onSubmitGame(gameForm)" #gameForm="ngForm" enctype="multipart/form-data" id="">
+                    <div class="form-group">
+                        <label for="game-title">Título</label>
+                        <input type="text" class="form-control" id="game-title" placeholder="Ejem: Halo 3" required [(ngModel)]="game.title" name="title"
+                            #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-resumen">Resumen</label>
+                        <textarea class="form-control" id="game-resumen" cols="30" rows="3" placeholder="Introduzca el resumen del juego" required
+                            [(ngModel)]="game.resumen" name="resumen" #name="ngModel"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-clasificacion">Clasificación</label>
+                        <select id="game-clasificacion" class="form-control" [(ngModel)]="game.clasificacion" name="clasificacion" #name="ngModel"
+                            required> 
+                            <option value="" disabled selected="selected">--Seleccione alguna clasificación-- </option> 
+                            <option *ngFor="let clasif of clasificacionesGames" [value]="clasif">{{clasif}}</option> 
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-desarrollador">Estudio Desarrollador</label>
+                        <input type="text" class="form-control" id="game-desarrollador" placeholder="Por ejem.: Ubisoft/Naughty Dog/343 Industries"
+                            required [(ngModel)]="game.desarrollador" name="desarrollador" #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-plataformas">Plataformas</label>
+                        <input type="text" class="form-control" id="game-plataformas" placeholder="Por ejem.: PC, Xbox One, PS4" required [(ngModel)]="game.plataformas"
+                            name="plataformas" #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-genero">Género</label>
+                        <input type="text" class="form-control" id="game-genero" placeholder="FPS, Simulador, Sandbox (separados por coma ',')" required
+                            [(ngModel)]="game.genero" name="genero" #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-modo">Modos de Juego</label>
+                        <input type="text" class="form-control" id="game-modo" placeholder="Campaña, Multijugador, Oleadas (separados por coma ',')"
+                            required [(ngModel)]="game.modo" name="modo" #name="ngModel">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-imagen">Portada</label>
+                        <input type="file" class="form-control" id="game-imagen" placeholder="" (change)="onChange($event)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div *ngSwitchCase="'copy'">
+
+        <div id="title" class="row center">
+            <h3 class="center">Registro de Copias de Juegos</h3>
+        </div>
+
+        <div class="row" id="user">
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <img [src]="getCoverImage(game)" class="img-responsive" alt="Image">
+            </div>
+
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <form (ngSubmit)="onSubmitCopy(copyForm)" #copyForm="ngForm">
+                    <div class="form-group">
+                        <label for="user-name">Id Game</label>
+                        <input type="text" class="form-control" id="id-game" required [(ngModel)]="copy.idGame" name="idGame" #name="ngModel" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-name">Titulo</label>
+                        <input type="text" class="form-control" id="game-title" required [(ngModel)]="game.title" name="title" #name="ngModel" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select class="form-control" id="estado" required [(ngModel)]="copy.estado" name="estado" #estado="ngModel">
+              <option *ngFor="let estado of estados" [value]="estado">{{estado}}</option>
+            </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchDefault>output2</div>
+</div>
