@@ -1,6 +1,8 @@
+import { PrestamoService } from './services/prestamo.service';
 import { CopyService } from './services/copy.service';
 import { UserService } from './services/user.service';
 import { GamesService } from './services/games.service';
+import { CopySearchService } from './services/copy-search.service';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -10,19 +12,20 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { GamesComponent } from './components/games/games.component';
 import { RouterModule } from '@angular/router';
-import { ViewDetailGameComponent } from './components/view-detail-game/view-detail-game.component';
+
 import { UserComponent } from './components/user/user.component';
 import { CreateComponent } from './components/create/create.component';
 import { DetailComponent } from './components/detail/detail.component';
+import { PrestamoComponent } from './components/prestamo/prestamo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GamesComponent,
-    ViewDetailGameComponent,
     UserComponent,
     CreateComponent,
-    DetailComponent
+    DetailComponent,
+    PrestamoComponent
   ],
   imports: [
     BrowserModule,
@@ -55,12 +58,22 @@ import { DetailComponent } from './components/detail/detail.component';
           {
             path: 'update/:type/:id',
             component: CreateComponent
+          },
+          {
+            path:'prestamos',
+            component: PrestamoComponent
           }
         ]
       }
     ])
   ],
-  providers: [GamesService, UserService, CopyService],
+  providers: [
+    GamesService, 
+    UserService, 
+    CopyService,
+    CopySearchService,
+    PrestamoService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

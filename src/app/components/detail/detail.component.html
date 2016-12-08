@@ -1,20 +1,17 @@
 <div [ngSwitch]="type">
   <div *ngSwitchCase="'user'">
-    <div class="row">
+    <div class="row" style="margin-top:20px">
       <div class="container">
         <div class="row">
-          <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+          <div class="">
             <div class="panel panel-info">
               <div class="panel-heading">
                 <h3 class="panel-title">ID {{user._id}}</h3>
               </div>
               <div class="panel-body">
                 <div class="row">
-
                   <div class="col-sm-3 col-md-3 " align="center">
-                    <img alt="User Pic" [src]="getImage()" class="img-circle img-responsive">
+                    <img alt="User Pic" [src]="getImage()" class="img-responsive">
                   </div>
                   <div class=" col-sm-9 col-md-9 ">
                     <table class="table table-user-information">
@@ -43,32 +40,61 @@
             </div>
           </div>
           <div class="panel-footer">
-            <button type="button" class="btn btn-block" (click)="goBack()">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <button type="button" class="btn btn-block" (click)="goBack()">
               <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-block" [routerLink]="['/update', 'user', user._id]">
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <button type="button" class="btn btn-block" [routerLink]="['/update', 'user', user._id]">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="background:white; paddin:10px; margin-top:10px; margin-botton:20px;">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID Copy</th>
+                  <th>Fecha de Autorizacion</th>
+                  <th>Fecha de retorno</th>
+                </tr>
+                <tr *ngFor="let prestamo of prestamos" >
+                  <td>
+                    {{prestamo.idCopia}}
+                  </td>
+                  <td>
+                    {{prestamo.fecha_autorizacion | date}}
+                  </td>
+                  <td>
+                    {{prestamo.fecha_retorno | date}}
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div *ngSwitchCase="'game'">
-    <div class="row">
+    <div class="row" style="margin-top:20px">>
       <div class="container">
         <div class="row">
-          <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+          <div>
             <div class="panel panel-info">
-              <div class="panel-heading">        
+              <div class="panel-heading">
                 <h3 class="panel-title">ID {{game._id}}</h3>
               </div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-sm-3 col-md-3 " align="center">
-                    <img alt="User Pic" [src]="getCoverImage(game)" class="img-circle img-responsive">
+                    <img alt="User Pic" [src]="getCoverImage(game)" class="img-responsive">
                   </div>
                   <div class=" col-sm-9 col-md-9 ">
                     <table class="table table-user-information">
@@ -76,7 +102,7 @@
                         <tr>
                           <td>Titulo: </td>
                           <td>{{game.title}}</td>
-                        </tr>    
+                        </tr>
                         <tr>
                           <td>Resumen: </td>
                           <td>{{game.resumen}} </td>
@@ -96,7 +122,7 @@
                         <tr>
                           <td>Desarrollador</td>
                           <td>{{game.desarrollador}}</td>
-                        </tr> 
+                        </tr>
                         <tr>
                           <td>Genero</td>
                           <td>{{game.genero}}</td>
@@ -105,16 +131,6 @@
                           <td>Modo</td>
                           <td>{{game.modo}}</td>
                         </tr>
-<!--
-                        <tr>
-                          <td>Requisitos</td>
-                          <td>{{game.requisitos}}</td>
-                        </tr>
-                        <tr>
-                          <td>Formatos</td>
-                          <td>{{game.formatos}}</td>
-                        </tr>
--->
                       </tbody>
                     </table>
                   </div>
@@ -123,33 +139,39 @@
             </div>
           </div>
           <div class="panel-footer">
-            <button type="button" class="btn btn-block" (click)="goBack()">
-              <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-block" [routerLink]="['/update', 'game', game._id]">
-              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            </button>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <button type="button" class="btn btn-block" (click)="goBack()">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <button type="button" class="btn btn-block" [routerLink]="['/update', 'game', game._id]">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+              </button>
+            </div>
           </div>
         </div>
-        
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>ID Copy</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let copy of copias">
-                <td>{{copy._id}}</td>
-                <td>{{copy.estado}}</td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="row" style="background:white; paddin:10px; margin-top:10px; margin-botton:20px;">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID Copy</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let copy of copias">
+                  <td>{{copy._id}}</td>
+                  <td>{{copy.estado}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  
-<div *ngSwitchDefault></div>
-</div>
+
+    <div *ngSwitchDefault></div>
+  </div>

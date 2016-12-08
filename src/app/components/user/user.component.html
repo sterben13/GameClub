@@ -3,49 +3,50 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </button>
 </div>
-
-<div id="container" class="row">
-    <div class="col-lg-3 col-sm-6" *ngFor="let user of users">
-        <div class="card hovercard">
-            <div class="cardheader">
-            </div>
-            <div class="avatar">
-                <img [src]="getMyPicture(user)">
-            </div>
-            <div class="info">
-                <div class="title">
-                    <a target="_blank" href="http://scripteden.com/">
-                        <p>{{user.nombre}} {{user.apellidos}}</p>
-                    </a>
+<div id="container-user">
+    <div id="container" class="row panel panel-info">
+        <div class="col-lg-3 col-sm-6 panel panel-info" *ngFor="let user of users">
+            <div class="card hovercard">
+                <div class="cardheader">
                 </div>
-                <div class="desc">{{user.email}}</div>
-            </div>
-            <div class="text-center panel-footer">
-                <a [routerLink]="['/detail','user',user._id]">
-                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                </a>
-                <a (click)="selectUser(user)">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
-                <a [routerLink]="['/create', 'prestamo', user.id]"><span class="glyphicon glyphicon-open-file"></span></a>
+                <div class="avatar">
+                    <img [src]="getMyPicture(user)">
+                </div>
+                <div class="info">
+                    <div class="title">
+                        <a target="_blank" href="http://scripteden.com/">
+                            <p>{{user.nombre}} {{user.apellidos}}</p>
+                        </a>
+                    </div>
+                    <div class="desc">{{user.email}}</div>
+                </div>
+                <div class="text-center panel-footer">
+                    <a [routerLink]="['/detail','user',user._id]">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </a>
+                    <a (click)="selectUser(user)">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
+                    <a [routerLink]="['/create', 'prestamo', user._id]"><span class="glyphicon glyphicon-open-file"></span></a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Eliminar Usuario</h4>
-            </div>
-            <div class="modal-body">
-                <h3>Estas seguro de eliminar {{userSelect.nombre}} {{userSelect.apellidos}}</h3>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" (click)="delete(); $event.stopPropagation()">Eliminar</button>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Eliminar Usuario</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Estas seguro de eliminar {{userSelect.nombre}} {{userSelect.apellidos}}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" (click)="delete(); $event.stopPropagation()">Eliminar</button>
+                </div>
             </div>
         </div>
     </div>

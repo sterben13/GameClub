@@ -1,13 +1,26 @@
+import { PrestamoService } from './../../services/prestamo.service';
 import { Game } from './../../class/game';
 import { Copia } from './../../class/copia';
-import { CopyService } from './../../services/copy.service';
 import { User } from './../../class/user';
-import { ActivatedRoute } from '@angular/router';
+import { Prestamo } from './../../class/prestamo';
+
 import { GamesService } from './../../services/games.service';
 import { UserService } from './../../services/user.service';
+import { CopyService } from './../../services/copy.service';
+import { CopySearchService } from './../../services/copy-search.service';
+
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/catch';
 
 @Component({
   selector: 'app-create',
@@ -20,17 +33,28 @@ export class CreateComponent implements OnInit, OnDestroy {
   user: User;
   copy: Copia;
   game: Game;
+  prestamo: Prestamo;
+
+  id: string;
+  title: string;
   files: File[]; //variable auxiliar para guardar una file
   image: string = 'http://localhost:3001/public/images/default/user.png'; //variable auxiliar para visualizar una imagen
   update = false;
+
   estados: string[] = ["ok", "dañado", "perdido", "irreparable"];
   clasificacionesGames = ['RP - Rating Pending', 'EC - Early Childhood ', 'E - Everyone', 'E10+ - Everyone 10+',
     'T - Teen', 'M - Mature', 'AO - Adults Only'];
+
+  private searchTerms = new Subject<string>();
+  copias: Observable<Copia[]>;
+
 
   constructor(
     private userService: UserService,
     private gamesService: GamesService,
     private copyService: CopyService,
+    private copySearchService: CopySearchService,
+    private prestamoService:PrestamoService,
     private route: ActivatedRoute,
     private location: Location
   )
@@ -59,12 +83,12 @@ export class CreateComponent implements OnInit, OnDestroy {
 
         case 'copy':
           console.log(params['id']);
-          this.copy = new Copia(params['id'], this.estados[0], true);
+          this.copy = new Copia('', params['id'], this.estados[0], true);
           this.game = new Game('', '', '', '', '', [], [], '', [], [], this.image);
-          this.gamesService.findById(params['id']).then((game)=>{
+          this.gamesService.findById(params['id']).then((game) => {
             this.game = game;
             console.log(game);
-          }).catch((err)=>{
+          }).catch((err) => {
             console.log(err);
           });
           break;
@@ -83,9 +107,30 @@ export class CreateComponent implements OnInit, OnDestroy {
               }).catch((err) => {
                 console.log(err);
               });
-          }else{
+          } else {
             this.image = 'http://localhost:3001/public/images/default/game.png';
           }
+          break;
+
+        case 'prestamo':
+          this.id = params['id'];
+          this.user = new User('', '', '', '', '', '', '', '');
+          this.userService.findById(this.id).then((user) => {
+            this.user = user;
+          }).catch((err) => {
+            console.log(err);
+          })
+          this.prestamo = new Prestamo('', '', this.now(), '');
+          this.copias = this.searchTerms
+            .debounceTime(300)        // wait for 300ms pause in events
+            .distinctUntilChanged()   // ignore if next search term is same as previous
+            .switchMap(term => term   // switch to new observable each time
+              ? this.copySearchService.search(term)
+              : Observable.of<Copia[]>([]))
+            .catch(error => {
+              console.log(error);
+              return Observable.of<Copia[]>([]);
+            });
           break;
         default:
           break;
@@ -108,6 +153,11 @@ export class CreateComponent implements OnInit, OnDestroy {
       }
       reader.readAsDataURL(event.target.files[0]);
     }
+  }
+
+  search(term: string): void {
+    console.log(term);
+    this.searchTerms.next(term);
   }
 
   onSubmitUser(form: NgForm) {
@@ -155,6 +205,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     json['idGame'] = form.controls['idGame'].value;
     json['estado'] = form.controls['estado'].value;
     json['disponibilidad'] = 'true';
+    json['title'] = this.game.title;
     this.copyService
       .create(json)
       .then((copy) => {
@@ -204,11 +255,45 @@ export class CreateComponent implements OnInit, OnDestroy {
         });
     }
   }
-  
-  getCoverImage(game) { 
-    return `http://localhost:3001${game.imagen}`; 
-  } 
-  
+
+  onSubmitPrestamo(form: NgForm) {
+    let jsonPrestamo={};
+    jsonPrestamo['idCopia'] = this.copy._id;
+    jsonPrestamo['idUser'] = this.id;
+    jsonPrestamo['fecha_autorizacion'] = new Date();
+    jsonPrestamo['fecha_retorno'] = form.controls['fecha_retorno'].value;
+    console.log(jsonPrestamo);
+    this.prestamoService.create(jsonPrestamo).then((doc)=>{
+      console.log(doc);
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+
+  getImage(url) {
+    return `http://localhost:3001${url}`;
+  }
+
+  now() {
+    var hoy: any = new Date();
+    var dd = hoy.getDate();
+    var mm = hoy.getMonth() + 1; //hoy es 0!
+    var yyyy = hoy.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd
+    }
+    if (mm < 10) {
+      mm = '0' + mm
+    }
+    hoy = dd + '/' + mm + '/' + yyyy;
+    return hoy;
+  }
+
+  selectCopy(copy) {
+    console.log(copy)
+    this.copy = copy;
+    this.title = copy.title;
+  }
 
   goBack(): void {
     this.location.back();

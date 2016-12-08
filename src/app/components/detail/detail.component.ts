@@ -1,10 +1,14 @@
-import { Copia } from './../../class/copia';
+import { PrestamoService } from './../../services/prestamo.service';
 import { CopyService } from './../../services/copy.service';
+import { GamesService } from './../../services/games.service';
+import { UserService } from './../../services/user.service';
+
+import { Copia } from './../../class/copia';
 import { User } from './../../class/user';
 import { Game } from './../../class/game';
-import { GamesService } from './../../services/games.service';
+import { Prestamo } from './../../class/prestamo';
+
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from './../../services/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 
@@ -19,12 +23,14 @@ export class DetailComponent implements OnInit, OnDestroy {
   user = new User('', '', '', '', '', '', '', '');
   game = new Game('', '', '', '', '', [], [], '', [], [], '');
   copias: Copia[];
+  prestamos : Prestamo[];
   id: string;
 
   constructor(
     private userServices: UserService,
     private gamesService: GamesService,
     private copyService: CopyService,
+    private prestamoService: PrestamoService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -38,18 +44,27 @@ export class DetailComponent implements OnInit, OnDestroy {
       case 'user':
         this.userServices.findById(this.id).then((user) => {
           this.user = user;
+          this.prestamoService
+            .prestamosByUser(this.user._id)
+            .then((doc) => {
+              this.prestamos=doc;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         });
+
         break;
       case 'game':
         this.gamesService.findById(this.id).then((game) => {
           this.game = game;
           this.copyService
-          .all(game._id)
-          .then((copies)=>{
-            this.copias=copies;
-          }).catch((err)=>{
+            .all(game._id)
+            .then((copies) => {
+              this.copias = copies;
+            }).catch((err) => {
 
-          });
+            });
         });
         break;
       default:
@@ -70,7 +85,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  getCoverImage(game){
+  getCoverImage(game) {
     return `http://localhost:3001${game.imagen}`;
   }
 }

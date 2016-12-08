@@ -1,0 +1,27 @@
+<div id="container-user" style="background:white; margin-top:20px;">
+    <div id="container" class="row panel panel-info">
+      
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>                
+              <th>ID Copia</th>
+              <th>ID User</th>
+              <th>Fecha de Autorizacion</th>
+              <th>Fecha de Retorno</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prestamo of prestamos" >
+              <td>{{prestamo.idCopia}}</td>
+              <td>{{prestamo.idUser}}</td>
+              <td>{{prestamo.fecha_autorizacion | date}}</td>
+              <td>{{prestamo.fecha_retorno | date}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+              
+    </div>
+</div>
+    

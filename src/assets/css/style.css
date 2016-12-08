@@ -1,0 +1,8 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    background-image: url('http://localhost:4200/assets/img/fondo.jpg');
+}
